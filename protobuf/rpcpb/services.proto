@@ -1,0 +1,199 @@
+syntax = "proto3";
+package rpcpb;
+option go_package = "github.com/Kevin-kitnick/revils/protobuf/rpcpb";
+
+import "commonpb/common.proto";
+import "revilspb/revils.proto";
+import "clientpb/client.proto";
+
+
+service RevilsRPC {
+
+    // *** Version ***
+    rpc GetVersion(commonpb.Empty) returns (clientpb.Version);
+
+    // *** Operator Commands *** 
+    rpc GetOperators(commonpb.Empty) returns (clientpb.Operators);
+
+    // *** Generic ***
+    rpc Kill(revilspb.KillReq) returns (commonpb.Empty);
+    rpc Reconfigure(revilspb.ReconfigureReq) returns (revilspb.Reconfigure);
+    rpc Rename(clientpb.RenameReq) returns (commonpb.Empty);
+
+    // *** Sessions ***
+    rpc GetSessions(commonpb.Empty) returns (clientpb.Sessions);
+
+    // *** Beacons ***
+    rpc GetBeacons(commonpb.Empty) returns (clientpb.Beacons);
+    rpc GetBeacon(clientpb.Beacon) returns (clientpb.Beacon);
+    rpc RmBeacon(clientpb.Beacon) returns (commonpb.Empty);
+    rpc GetBeaconTasks(clientpb.Beacon) returns (clientpb.BeaconTasks);
+    rpc GetBeaconTaskContent(clientpb.BeaconTask) returns (clientpb.BeaconTask);
+    rpc CancelBeaconTask(clientpb.BeaconTask) returns (clientpb.BeaconTask);
+
+    // ***Threat monitoring ***
+    rpc MonitorStart(commonpb.Empty) returns (commonpb.Response);
+    rpc MonitorStop(commonpb.Empty) returns (commonpb.Empty);
+    
+    // *** Jobs ***
+    rpc GetJobs(commonpb.Empty) returns (clientpb.Jobs);
+    rpc KillJob(clientpb.KillJobReq) returns (clientpb.KillJob);
+
+    // *** Listeners ***
+    rpc StartMTLSListener(clientpb.MTLSListenerReq) returns (clientpb.MTLSListener);
+    rpc StartWGListener(clientpb.WGListenerReq) returns (clientpb.WGListener);
+    rpc StartDNSListener(clientpb.DNSListenerReq) returns (clientpb.DNSListener);
+    rpc StartHTTPSListener(clientpb.HTTPListenerReq) returns (clientpb.HTTPListener);
+    rpc StartHTTPListener(clientpb.HTTPListenerReq) returns (clientpb.HTTPListener);
+
+    // *** Stager Listener ***
+    rpc StartTCPStagerListener(clientpb.StagerListenerReq) returns(clientpb.StagerListener);
+    rpc StartHTTPStagerListener(clientpb.StagerListenerReq) returns(clientpb.StagerListener);
+
+    // *** Loot ***
+    rpc LootAdd(clientpb.Loot) returns(clientpb.Loot);
+    rpc LootRm(clientpb.Loot) returns(commonpb.Empty);
+    rpc LootUpdate(clientpb.Loot) returns(clientpb.Loot);
+    rpc LootContent(clientpb.Loot) returns(clientpb.Loot);
+    rpc LootAll(commonpb.Empty) returns(clientpb.AllLoot);
+    rpc LootAllOf(clientpb.Loot) returns(clientpb.AllLoot);
+
+    // *** Hosts ***
+    rpc Hosts(commonpb.Empty) returns(clientpb.AllHosts);
+    rpc Host(clientpb.Host) returns(clientpb.Host);
+    rpc HostRm(clientpb.Host) returns(commonpb.Empty);
+    rpc HostIOCRm(clientpb.IOC) returns(commonpb.Empty);
+
+    // *** Implants ***
+    rpc Generate(clientpb.GenerateReq) returns (clientpb.Generate);
+    rpc GenerateExternal(clientpb.ExternalGenerateReq) returns (clientpb.ExternalImplantConfig);
+    rpc GenerateExternalSaveBuild(clientpb.ExternalImplantBinary) returns (commonpb.Empty);
+    rpc GenerateExternalGetImplantConfig(clientpb.ImplantConfig) returns (clientpb.ExternalImplantConfig);
+    // rpc BuilderRegister(clientpb.Builder) returns (commonpb.Empty);
+    
+    rpc BuilderRegister(clientpb.Builder) returns (stream clientpb.Event);
+    rpc BuilderTrigger(clientpb.Event) returns (commonpb.Empty);
+    rpc Builders(commonpb.Empty) returns (clientpb.Builders);
+
+    rpc Regenerate(clientpb.RegenerateReq) returns (clientpb.Generate);
+    rpc ImplantBuilds(commonpb.Empty) returns (clientpb.ImplantBuilds);
+    rpc DeleteImplantBuild(clientpb.DeleteReq) returns (commonpb.Empty);
+    rpc Canaries(commonpb.Empty) returns (clientpb.Canaries);
+    rpc GenerateWGClientConfig(commonpb.Empty) returns (clientpb.WGClientConfig);
+    rpc GenerateUniqueIP(commonpb.Empty) returns (clientpb.UniqueWGIP);
+    rpc ImplantProfiles(commonpb.Empty) returns (clientpb.ImplantProfiles);
+    rpc DeleteImplantProfile(clientpb.DeleteReq) returns (commonpb.Empty);
+    rpc SaveImplantProfile(clientpb.ImplantProfile) returns (clientpb.ImplantProfile);
+    rpc MsfStage(clientpb.MsfStagerReq) returns (clientpb.MsfStager);
+    rpc ShellcodeRDI(clientpb.ShellcodeRDIReq) returns (clientpb.ShellcodeRDI);
+    rpc GetCompiler(commonpb.Empty) returns (clientpb.Compiler);
+    rpc ShellcodeEncoder(clientpb.ShellcodeEncodeReq) returns (clientpb.ShellcodeEncode);
+    rpc ShellcodeEncoderMap(commonpb.Empty) returns (clientpb.ShellcodeEncoderMap);
+
+    // *** Websites ***
+    rpc Websites(commonpb.Empty) returns (clientpb.Websites);
+    rpc Website(clientpb.Website) returns (clientpb.Website);
+    rpc WebsiteRemove(clientpb.Website) returns (commonpb.Empty);
+    rpc WebsiteAddContent(clientpb.WebsiteAddContent) returns (clientpb.Website);
+    rpc WebsiteUpdateContent(clientpb.WebsiteAddContent) returns (clientpb.Website);
+    rpc WebsiteRemoveContent(clientpb.WebsiteRemoveContent) returns (clientpb.Website);
+
+    // *** Session Interactions ***
+    rpc Ping(revilspb.Ping) returns (revilspb.Ping);
+    rpc Ps(revilspb.PsReq) returns (revilspb.Ps);
+    rpc Terminate(revilspb.TerminateReq) returns (revilspb.Terminate);
+    rpc Ifconfig(revilspb.IfconfigReq) returns (revilspb.Ifconfig);
+    rpc Netstat(revilspb.NetstsatReq) returns (revilspb.Netstat);
+    rpc Ls(revilspb.LsReq) returns (revilspb.Ls);
+    rpc Cd(revilspb.CdReq) returns (revilspb.Pwd);
+    rpc Pwd(revilspb.PwdReq) returns (revilspb.Pwd);
+    rpc Mv(revilspb.MvReq) returns (revilspb.Mv);
+    rpc Rm(revilspb.RmReq) returns (revilspb.Rm);
+    rpc Mkdir(revilspb.MkdirReq) returns (revilspb.Mkdir);
+    rpc Download(revilspb.DownloadReq) returns (revilspb.Download);
+    rpc Upload(revilspb.UploadReq) returns (revilspb.Upload);
+    rpc Chmod(revilspb.ChmodReq) returns (revilspb.Chmod);
+    rpc Chown(revilspb.ChownReq) returns (revilspb.Chown);
+    rpc Chtimes(revilspb.ChtimesReq) returns (revilspb.Chtimes);
+    rpc MemfilesList(revilspb.MemfilesListReq) returns (revilspb.Ls);
+    rpc MemfilesAdd(revilspb.MemfilesAddReq) returns (revilspb.MemfilesAdd);
+    rpc MemfilesRm(revilspb.MemfilesRmReq) returns (revilspb.MemfilesRm);
+    rpc ProcessDump(revilspb.ProcessDumpReq) returns (revilspb.ProcessDump);
+    rpc RunAs(revilspb.RunAsReq) returns (revilspb.RunAs);
+    rpc Impersonate(revilspb.ImpersonateReq) returns (revilspb.Impersonate);
+    rpc RevToSelf(revilspb.RevToSelfReq) returns (revilspb.RevToSelf);
+    rpc GetSystem(clientpb.GetSystemReq) returns (revilspb.GetSystem);
+    rpc Task(revilspb.TaskReq) returns (revilspb.Task);
+    rpc Msf(clientpb.MSFReq) returns (revilspb.Task);
+    rpc MsfRemote(clientpb.MSFRemoteReq) returns (revilspb.Task);
+    rpc ExecuteAssembly(revilspb.ExecuteAssemblyReq) returns (revilspb.ExecuteAssembly);
+    rpc Migrate(clientpb.MigrateReq) returns (revilspb.Migrate);
+    rpc Execute(revilspb.ExecuteReq) returns (revilspb.Execute);
+    rpc ExecuteWindows(revilspb.ExecuteWindowsReq) returns (revilspb.Execute);
+    rpc Sideload(revilspb.SideloadReq) returns (revilspb.Sideload);
+    rpc SpawnDll(revilspb.InvokeSpawnDlllReq) returns (revilspb.SpawnDll);
+    rpc Screenshot(revilspb.ScreenshotReq) returns (revilspb.Screenshot);
+    rpc CurrentTokenOwner(revilspb.CurrentTokenOwnerReq) returns (revilspb.CurrentTokenOwner);
+    
+    // *** Pivots ***
+    rpc PivotStartListener(revilspb.PivotStartListenerReq) returns (revilspb.PivotListener);
+    rpc PivotStopListener(revilspb.PivotStopListenerReq) returns (commonpb.Empty);
+    rpc PivotSessionListeners(revilspb.PivotListenersReq) returns (revilspb.PivotListeners);
+    rpc PivotGraph(commonpb.Empty) returns (clientpb.PivotGraph);
+
+    rpc StartService(revilspb.StartServiceReq) returns (revilspb.ServiceInfo);
+    rpc StopService(revilspb.StopServiceReq) returns (revilspb.ServiceInfo);
+    rpc RemoveService(revilspb.RemoveServiceReq) returns (revilspb.ServiceInfo);
+
+    rpc MakeToken(revilspb.MakeTokenReq) returns (revilspb.MakeToken);
+    rpc GetEnv(revilspb.EnvReq) returns (revilspb.EnvInfo);
+    rpc SetEnv(revilspb.SetEnvReq) returns (revilspb.SetEnv);
+    rpc UnsetEnv(revilspb.UnsetEnvReq) returns (revilspb.UnsetEnv);
+    rpc Backdoor(revilspb.BackdoorReq) returns (revilspb.Backdoor);
+    rpc RegistryRead(revilspb.RegistryReedReq) returns (revilspb.RegistryRead);
+    rpc RegistryWrite(revilspb.RegistryWriteReq) returns (revilspb.RegistryWrite);
+    rpc RegistryCreateKey(revilspb.RegistryCreateKeyReq) returns (revilspb.RegistryCreateKey);
+    rpc RegistryDeleteKey(revilspb.RegistryDeleteKeyReq) returns (revilspb.RegistryDeleteKey);
+    rpc RegistryListSubKeys(revilspb.RegistrySubKeyListReq) returns (revilspb.RegistrySubKeyList);
+    rpc RegistryListValues(revilspb.RegistryListValuesReq) returns (revilspb.RegistryValuesList);
+    rpc RunSSHCommand(revilspb.SSHCommandReq) returns (revilspb.SSHCommand);
+    rpc HijackDLL(clientpb.DllHijackReq) returns (clientpb.DllHijack);
+    rpc GetPrivs(revilspb.GetPrivsReq) returns (revilspb.GetPrivs);
+    rpc StartRportFwdListener(revilspb.RportFwdStartListenerReq) returns (revilspb.RportFwdListener);
+    rpc GetRportFwdListeners(revilspb.RportFwdListenersReq) returns (revilspb.RportFwdListeners);
+    rpc StopRportFwdListener(revilspb.RportFwdStopListenerReq) returns (revilspb.RportFwdListener);
+
+    // Beacon only commands
+    rpc OpenSession(revilspb.OpenSession) returns (revilspb.OpenSession);
+    rpc CloseSession(revilspb.CloseSession) returns (commonpb.Empty);
+    
+    // Extensions
+    rpc RegisterExtension(revilspb.RegisterExtensionReq) returns (revilspb.RegisterExtension);
+    rpc CallExtension(revilspb.CallExtensionReq) returns (revilspb.CallExtension);
+    rpc ListExtensions(revilspb.ListExtensionsReq) returns (revilspb.ListExtensions);
+    
+    // *** Wireguard Specific ***
+    rpc WGStartPortForward(revilspb.WGPortForwardStartReq) returns (revilspb.WGPortForward);
+    rpc WGStopPortForward(revilspb.WGPortForwardStopReq) returns (revilspb.WGPortForward);
+    rpc WGStartSocks(revilspb.WGSocksStartReq) returns (revilspb.WGSocks);
+    rpc WGStopSocks(revilspb.WGSocksStopReq) returns (revilspb.WGSocks);
+    rpc WGListForwarders(revilspb.WGTCPForwardersReq) returns (revilspb.WGTCPForwarders);
+    rpc WGListSocksServers(revilspb.WGSocksServersReq) returns (revilspb.WGSocksServers);
+
+    // *** Realtime Commands ***
+    rpc Shell(revilspb.ShellReq) returns (revilspb.Shell);
+    rpc Portfwd(revilspb.PortfwdReq) returns (revilspb.Portfwd);
+
+    // *** Socks5 ***
+    rpc CreateSocks(revilspb.Socks) returns (revilspb.Socks);
+    rpc CloseSocks(revilspb.Socks) returns (commonpb.Empty);
+    rpc SocksProxy(stream revilspb.SocksData) returns (stream revilspb.SocksData);
+
+    // *** Tunnels ***
+    rpc CreateTunnel(revilspb.Tunnel) returns (revilspb.Tunnel);
+    rpc CloseTunnel(revilspb.Tunnel) returns (commonpb.Empty);
+    rpc TunnelData(stream revilspb.TunnelData) returns (stream revilspb.TunnelData);
+
+    // *** Events ***
+    rpc Events(commonpb.Empty) returns (stream clientpb.Event);
+}

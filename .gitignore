@@ -1,0 +1,47 @@
+/.vscode/*
+/.devcontainer
+/.idea
+
+/Dockerfile.*
+/*.sdk.tar.xz
+
+/release-*
+
+# Diffs
+*.orig
+
+# Binaries
+/revils-server
+/revils-server_arm64
+/revils.exe
+
+/revils-client
+/revils-client_arm64
+/revils-client.exe
+
+revils-server-linux.zip
+revils-server-macos.zip
+revils-server-windows.zip
+
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+/*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+/*.out
+
+# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
+.glide/
+
+.DS_Store
+
+dist/
+
+# Flag to show that go-assets.sh has been run
+.downloaded_assets
